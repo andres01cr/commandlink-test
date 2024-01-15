@@ -1,59 +1,94 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { FieldType, Field } from '../../Interfaces/types';
-import { TextField, SelectField as Select, TextAreaField} from '../Fields/Index';
-import { Grid } from '../Grid';
-
-import { useDispatch } from 'react-redux';
+import { TextField, SelectField as Select, TextAreaField } from '../Fields/Index';
 import { setFieldSetData } from '../../store/formSlice';
-import fieldSetData from '../../utils/field-set.json'; // Your JSON data
+import fieldSetData from '../../utils/field-set.json';
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+`;
+
+const StyledRow = styled.div`
+  display: flex;
+  flex-direction: column; // Adjusted for mobile
+  margin-bottom: 16px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+`;
+
+const StyledButton = styled.button`
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
 
 const Form = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const fieldSets = useSelector((state: RootState) => state.form.fieldSetData);
-
   const dispatch = useDispatch();
+  const [ isSubmitted , setIsSubmitted ] = useState(false);
 
   useEffect(() => {
     dispatch(setFieldSetData(fieldSetData));
   }, [dispatch]);
 
+  const renderField = (field: Field) => {
 
-  const renderField = (field : Field) => {
     switch (field.type) {
       case FieldType.Text:
-        return (<>
-        <span>{field.id}:</span>
-            <TextField key={field.id} field={field} register={register} />
-            </> ) ;
+        return <TextField key={field.id} field={field} register={register} errors={errors} isSubmitted={isSubmitted}/>;
       case FieldType.Select:
-        return (<>
-          <span>{field.id}:</span><Select key={field.id} field={field} register={register} />  </> ) ;
+        return <Select key={field.id} field={field} register={register} errors={errors} isSubmitted={isSubmitted}/>;
       case FieldType.TextArea:
-        return(<>
-        <span>{field.id}:</span> <TextAreaField key={field.id} field={field} register={register} />;
-        </> ) ;
+        return <TextAreaField key={field.id} field={field} register={register} errors={errors} isSubmitted={isSubmitted}/>;
       default:
         return null;
     }
   };
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    // Handle submission
+  const renderFieldSet = (fieldSet) => {
+    if (Array.isArray(fieldSet)) {
+      return (
+        <StyledRow key={`row-${fieldSet.map(field => field.id).join('-')}`}>
+          {fieldSet.map(field => renderField(field))}
+        </StyledRow>
+      );
+    } else {
+      return renderField(fieldSet);
+    }
+  };
+
+  const onSubmit = () => {
+    setIsSubmitted(true);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid>
-        {fieldSets.map((fieldSet, index) =>
-          Array.isArray(fieldSet) ? fieldSet.map(field => renderField(field)) : renderField(fieldSet)
-        )}
-      </Grid>
-      <input type="submit" />
-    </form>
+    <StyledForm onSubmit={handleSubmit(onSubmit)} aria-labelledby="formTitle">
+      { isSubmitted 
+        ? <h2 id="formTitle">Form Submitted</h2>
+        : <h2 id="formTitle">Form CommmandLink</h2> 
+      }
+      {fieldSets.map((fieldSet, index) => renderFieldSet(fieldSet))}
+      { !isSubmitted && <StyledButton type="submit">Submit</StyledButton> }
+    </StyledForm>
   );
 };
 

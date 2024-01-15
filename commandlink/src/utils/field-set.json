@@ -2,19 +2,35 @@
   [{
     "id": "firstName",
     "placeholder": "First name",
-    "required": true,
+    "required":  {
+      "value": true,
+      "message": "First Name is required"
+   },
     "type": "text"
   },
   {
     "id": "lastName",
     "placeholder": "Last name",
-    "required": true,
+    "required":  {
+      "value": true,
+      "message": "Last Name is required"
+   },
     "type": "text"
   }],
   {
-    "id": "Email",
-    "required": true,
-    "type": "text"
+    "id": "email",
+    "placeholder": "Enter your email",
+    "required":  {
+      "value": true,
+      "message": "Email is required"
+   },
+    "type": "text",
+    "validation": {
+      "pattern": {
+        "value": "(.+)@(.+){2,}\\.(.+){2,}",
+        "message": "Invalid email address"
+      }
+    }
   },
   {
     "id": "address1",
@@ -35,8 +51,18 @@
   }],
   {
     "id": "phone",
-    "required": true,
-    "type": "text"
+    "placeholder": "Enter your phone number",
+    "required":  {
+      "value": true,
+      "message": "Phone is required"
+   },
+    "type": "text",
+    "validation": {
+      "pattern": {
+        "value": "^[0-9]{10}$",
+        "message": "Invalid phone number"
+      }
+    }
   },
   {
     "id": "jobTitle",
@@ -49,7 +75,11 @@
       "Engineer - full stack"
     ],
     "placeholder": "Please select job title",
-    "type": "select"
+    "type": "select",
+    "required":  {
+      "value": true,
+      "message": "Job title is required"
+    }
   },
   {
     "id": "reason",
