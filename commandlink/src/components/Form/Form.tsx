@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/store';
 import { FieldType, Field, FieldGroup } from '../../Interfaces/types';
 import { TextField, SelectField as Select, TextAreaField } from '../Fields/Index';
-import { setFieldSetData } from '../../store/formSlice';
-import fieldSetData from '../../utils/field-set.json';
 
 const StyledForm = styled.form`
   display: flex;
@@ -43,18 +41,14 @@ const StyledButton = styled.button`
 const Form = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const fieldSets = useSelector((state: RootState) => state.form.fieldSetData);
-  const dispatch = useDispatch();
-  const [ isSubmitted , setIsSubmitted ] = useState(false);
 
-  useEffect(() => {
-    dispatch(setFieldSetData(fieldSetData));
-  }, [dispatch]);
+  const [ isSubmitted , setIsSubmitted ] = useState(false);
 
   const renderField = (field: Field) => {
 
     switch (field.type) {
       case FieldType.Text:
-        return <TextField key={field.id} field={field} register={register} errors={errors} isSubmitted={isSubmitted}/>;
+        return <TextField  key={field.id} field={field} register={register} errors={errors} isSubmitted={isSubmitted}/>;
       case FieldType.Select:
         return <Select key={field.id} field={field} register={register} errors={errors} isSubmitted={isSubmitted}/>;
       case FieldType.TextArea:
