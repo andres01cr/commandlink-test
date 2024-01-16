@@ -39,7 +39,7 @@ const TextArea = ({ field, register, isSubmitted, errors }: { field: Field, regi
   const value = useSelector((state: RootState) => state.form.fieldValues[field.id]);
 
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { value: any; }; }) => {
     dispatch(updateFieldValue({ fieldId: field.id, value: e.target.value }));
   };
 
@@ -47,19 +47,20 @@ const TextArea = ({ field, register, isSubmitted, errors }: { field: Field, regi
     <div>
       <StyledLabel htmlFor={field.id}>{field.id}</StyledLabel>
       { isSubmitted ? (
-        <StyledValue> { value }</StyledValue>
+        <StyledValue  data-testid={field.id}>{value}</StyledValue>
       ) : (
       <StyledTextArea
         {...register(field.id, { required: field.required })}
         placeholder={field.placeholder}
         id={field.id}
+        data-testid={field.id}
         onChange={handleChange}
-        aria-required={field.required ? 'true' : 'false'}
+        aria-required={field.required?.value ? 'true' : 'false'}
         aria-label={field.id}
-        value={value || ''}
+        value={value}
       />
       )}
-    {errors[field.id] && <ErrorMessage>{errors[field.id].message}</ErrorMessage>}
+    {errors[field.id] && <ErrorMessage data-testid={`errorMessage-${field.id}`}>{errors[field.id].message}</ErrorMessage>}
     </div>
   );
 

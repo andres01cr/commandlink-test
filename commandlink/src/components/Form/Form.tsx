@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../store/store';
-import { FieldType, Field } from '../../Interfaces/types';
+import { FieldType, Field, FieldGroup } from '../../Interfaces/types';
 import { TextField, SelectField as Select, TextAreaField } from '../Fields/Index';
 import { setFieldSetData } from '../../store/formSlice';
 import fieldSetData from '../../utils/field-set.json';
@@ -17,7 +17,7 @@ const StyledForm = styled.form`
 
 const StyledRow = styled.div`
   display: flex;
-  flex-direction: column; // Adjusted for mobile
+  flex-direction: column;
   margin-bottom: 16px;
 
   @media (min-width: 768px) {
@@ -64,7 +64,7 @@ const Form = () => {
     }
   };
 
-  const renderFieldSet = (fieldSet) => {
+  const renderFieldSet = (fieldSet:FieldGroup ) => {
     if (Array.isArray(fieldSet)) {
       return (
         <StyledRow key={`row-${fieldSet.map(field => field.id).join('-')}`}>
@@ -82,12 +82,14 @@ const Form = () => {
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} aria-labelledby="formTitle">
-      { isSubmitted 
-        ? <h2 id="formTitle">Form Submitted</h2>
-        : <h2 id="formTitle">Form CommmandLink</h2> 
-      }
-      {fieldSets.map((fieldSet, index) => renderFieldSet(fieldSet))}
-      { !isSubmitted && <StyledButton type="submit">Submit</StyledButton> }
+      <>
+        { isSubmitted 
+          ? <h2 id="formTitle">Form Submitted</h2>
+          : <h2 id="formTitle">Form CommmandLink</h2> 
+        }
+        {fieldSets.map((fieldSet: FieldGroup, index) => renderFieldSet(fieldSet))}
+        { !isSubmitted && <StyledButton type="submit">Submit</StyledButton> }
+      </>
     </StyledForm>
   );
 };

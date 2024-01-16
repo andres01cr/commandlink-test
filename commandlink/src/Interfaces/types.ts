@@ -4,19 +4,35 @@ export enum FieldType {
   TextArea = "textarea",
 }
 
+export interface ValidationPattern {
+  value: string;
+  message: string;
+}
+
+export interface FieldRequired {
+  value: boolean;
+  message: string;
+}
+
 export interface Field {
   id: string;
-  placeholder: string;
-  required?: {
-    value: boolean;
-    message: string;
-  };
-  type: FieldType;
+  placeholder?: string;
+  required?: FieldRequired;
+  type: FieldType | string;
   options?: string[];
   validation?: {
-    pattern?: {
-      value: RegExp;
-      message: string;
-    };
+    pattern?: ValidationPattern;
   };
+}
+
+export type FieldGroup = Field | Field[];
+
+export interface UpdateFieldValuePayload {
+  fieldId: string;
+  value: any;
+}
+
+export interface FormState {
+  fieldSetData:  FieldGroup[];
+  fieldValues: { [key: string]: any };
 }

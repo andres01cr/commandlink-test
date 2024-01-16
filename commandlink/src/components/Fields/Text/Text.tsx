@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFieldValue } from '../../../store/formSlice';
 import { RootState } from '../../../store/store';
+import { Field } from '../../../Interfaces/types';
 
 const StyledLabel = styled.label`
   margin-bottom: 8px;
@@ -24,7 +25,7 @@ const StyledInput = styled.input`
   border-radius: 4px;
 `;
 
-const StyledValue = styled.label`
+const StyledValue = styled.span`
   padding: 10px;
   margin-bottom: 16px;
 `;
@@ -36,35 +37,36 @@ const ErrorMessage = styled.span`
   display: block;
 `;
 
-const Text = ({ field, register, errors, isSubmitted }) => {
+const Text = ({ field, register, errors, isSubmitted }: { field: Field, register: any, isSubmitted: boolean, errors: any }) => {
   const dispatch = useDispatch();
-  const value = useSelector((state: RootState) => state.form.fieldValues[field.id]);
 
-  const handleChange = (e) => {
+  const value = useSelector((state: RootState) => state.form?.fieldValues[field.id]);
+
+  const handleChange = (e: { target: { value: any; }; }) => {
     dispatch(updateFieldValue({ fieldId: field.id, value: e.target.value }));
   };
-
   return (
     <div>
       <StyledLabel htmlFor={field.id}>{field.id}</StyledLabel>
       { isSubmitted ? (
-        <StyledValue> { value }</StyledValue>
+        <StyledValue  data-testid={field.id}>{value}</StyledValue>
       ) : (
       <StyledInput
         {...register(field.id, {
           required: field.required,
-          pattern: { value: new RegExp( field.validation?.pattern?.value)}
+          pattern: { value: new RegExp( field.validation?.pattern?.value || ''), message: field.validation?.pattern?.message }
         })}
         placeholder={field.placeholder}
         type="text"
         id={field.id}
-        aria-required={field.required ? 'true' : 'false'}
+        aria-required={field.required?.value ? 'true' : 'false'}
         aria-label={field.id}
         onChange={handleChange}
-        value={value || ''}
+        value={value}
+        data-testid={field.id}
       />
       )}
-      {errors[field.id] && <ErrorMessage>{errors[field.id].message}</ErrorMessage>}
+      {errors[field.id] && <ErrorMessage data-testid={`errorMessage-${field.id}`}>{errors[field.id].message}</ErrorMessage>}
     </div>
   );
 };

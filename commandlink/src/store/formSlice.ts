@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { UpdateFieldValuePayload, FormState, FieldGroup } from '../Interfaces/types';
 
-const initialState = {
+const initialState: FormState= {
   fieldSetData: [],
   fieldValues: {}
 };
@@ -9,10 +10,10 @@ export const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
-    setFieldSetData: (state, action) => {
+    setFieldSetData: (state, action: PayloadAction<FieldGroup[]>) => {
       state.fieldSetData = action.payload;
     },
-    updateFieldValue: (state, action) => {
+    updateFieldValue: (state, action: PayloadAction<UpdateFieldValuePayload>) => {
       const { fieldId, value } = action.payload;
       state.fieldValues[fieldId] = value;
     }
