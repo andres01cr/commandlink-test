@@ -6,7 +6,7 @@ import { RootState } from '../../../store/store';
 import {  Field } from '../../../Interfaces/types';
 
 const StyledSelect = styled.select`
-  width: 100%;
+  width: 102%;
   padding: 10px;
   margin-bottom: 16px;
   border: 1px solid #ccc;
