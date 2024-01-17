@@ -22,7 +22,7 @@ const StyledLabel = styled.label<{ $isSubmitted: boolean }>`
 
 const StyledTextArea = styled.textarea`
   width: 100%;
-  padding: 10px 0;
+  padding: 10px 0 10px 10px;
   margin-bottom: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;

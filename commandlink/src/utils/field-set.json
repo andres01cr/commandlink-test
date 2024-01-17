@@ -33,7 +33,7 @@
     }
   },
   {
-    "id": "address1",
+    "id": "address",
     "placeholder": "Address 1",
     "type": "text"
   },
