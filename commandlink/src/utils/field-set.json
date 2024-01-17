@@ -34,7 +34,7 @@
   },
   {
     "id": "address",
-    "placeholder": "Address 1",
+    "placeholder": "Address",
     "type": "text"
   },
   [{
