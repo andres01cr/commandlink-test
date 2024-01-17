@@ -27,7 +27,7 @@ const StyledLabel = styled.label<{ $isSubmitted: boolean }>`
 
 const StyledInput = styled.input`
   width: 100%;
-  padding: 10px 0;
+  padding: 10px 0 10px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 `;
