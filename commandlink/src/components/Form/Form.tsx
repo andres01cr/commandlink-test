@@ -53,8 +53,6 @@ const Form = () => {
         return <Select key={field.id} field={field} register={register} errors={errors} isSubmitted={isSubmitted}/>;
       case FieldType.TextArea:
         return <TextAreaField key={field.id} field={field} register={register} errors={errors} isSubmitted={isSubmitted}/>;
-      default:
-        return null;
     }
   };
 
@@ -75,7 +73,7 @@ const Form = () => {
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)} aria-labelledby="formTitle">
+    <StyledForm data-testid={'form-commandLink'} onSubmit={handleSubmit(onSubmit)} aria-labelledby="formTitle">
       <>
         { isSubmitted 
           ? <h2 id="formTitle">Form Submitted</h2>
