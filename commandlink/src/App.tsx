@@ -3,7 +3,7 @@ import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setFieldSetData } from './store/formSlice';
 import Form from './components/Form/Form';
-import fieldSetData from './utils/field-set.json'; // Your JSON data
+import fieldSetData from './utils/field-set.json';
 
 const App: FC = () => {
 
